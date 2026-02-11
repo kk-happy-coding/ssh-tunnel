@@ -65,8 +65,9 @@ def validate_host(host: str) -> Tuple[bool, Optional[str]]:
         pass
 
     # Validate as hostname
+    # Allow alphanumeric, dots, and hyphens (common for hostnames)
     hostname_pattern = re.compile(
-        r"^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*$"
+        r"^(?!-)(?:[a-zA-Z0-9-]{1,63}(?<!-)\.)*[a-zA-Z0-9-]{1,63}(?<!-)$"
     )
     if not hostname_pattern.match(host):
         return False, "Invalid hostname format"

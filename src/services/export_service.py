@@ -317,5 +317,6 @@ class ExportService:
         """
         # Simple escaping for common cases
         if " " in arg or '"' in arg or "'" in arg:
-            return f'"{arg.replace('"', '\\"')}"'
+            escaped = arg.replace('"', '\\"')
+            return f'"{escaped}"'
         return arg

@@ -2,12 +2,12 @@
 
 import base64
 import os
-from typing import Union
+from typing import Tuple, Union
 
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
 class CryptoManager:
@@ -33,7 +33,7 @@ class CryptoManager:
         Returns:
             Fernet instance
         """
-        kdf = PBKDF2(
+        kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
             salt=salt,
@@ -117,7 +117,7 @@ def generate_key() -> str:
 
 def hash_password(password: str, salt: Union[bytes, None] = None) -> Tuple[str, str]:
     """
-    Hash a password using PBKDF2.
+    Hash a password using PBKDF2HMAC.
 
     Args:
         password: Password to hash
@@ -129,7 +129,7 @@ def hash_password(password: str, salt: Union[bytes, None] = None) -> Tuple[str, 
     if salt is None:
         salt = os.urandom(16)
 
-    kdf = PBKDF2(
+    kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
         salt=salt,
@@ -161,6 +161,3 @@ def verify_password(password: str, password_hash: str, salt: str) -> bool:
     except Exception:
         return False
 
-
-# Import Tuple for type hint
-from typing import Tuple

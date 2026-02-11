@@ -6,7 +6,7 @@ import socket
 import threading
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 
 import paramiko
 
@@ -334,6 +334,3 @@ class SSHManager:
         except Exception:
             pass
 
-
-# Import Tuple for type hints
-from typing import Tuple

@@ -102,13 +102,18 @@ class TestConnectionModel:
         assert conn_dict["username"] == sample_connection.username
         assert "password" not in conn_dict  # Passwords not included in dict
 
-    def test_connection_from_dict(self):
+    def test_connection_from_dict(self, temp_dir):
         """Test creating connection from dictionary."""
+        # Create temp key file
+        key_file = temp_dir / "test_key.pem"
+        key_file.write_text("-----BEGIN RSA PRIVATE KEY-----\ntest\n-----END RSA PRIVATE KEY-----\n")
+
         data = {
             "host": "example.com",
             "port": 22,
             "username": "testuser",
-            "auth_method": "password",
+            "auth_method": "key_file",
+            "key_file": str(key_file),
             "timeout": 10,
         }
 
@@ -117,7 +122,7 @@ class TestConnectionModel:
         assert conn.host == data["host"]
         assert conn.port == data["port"]
         assert conn.username == data["username"]
-        assert conn.auth_method == AuthMethod.PASSWORD
+        assert conn.auth_method == AuthMethod.KEY_FILE
 
     def test_connection_get_connection_string(self, sample_connection):
         """Test getting connection string representation."""
